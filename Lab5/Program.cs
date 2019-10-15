@@ -4,7 +4,7 @@ namespace ConsoleApp1
 {
     interface IMyInterface
     {
-        int MyFunc();
+        string MyFunc();
     }
 
     class Product
@@ -63,37 +63,77 @@ namespace ConsoleApp1
     abstract class Computer : Tech
     {
         public string OS { get; set; }
+
         public override string ToString()
         {
             return base.ToString() + " " + this.OS;
         }
+
+        public Computer() : base()
+        {
+            OS = "NoName OS";
+        }
+
+        public Computer(string organization, string product, string manufacturer, string os) : base(organization, product, manufacturer)
+        {
+            OS = os;
+        }
+
+        public abstract string MyFunc();
     }
 
     sealed class Printer : Tech
     {
         public string IncType { get; set; }
+
         public override string ToString()
         {
             return base.ToString() + " " + this.IncType;
+        }
+
+        public Printer() : base()
+        {
+            IncType = "NoName Inc";
+        }
+
+        public Printer(string organization, string product, string manufacturer, string inc) : base(organization, product, manufacturer)
+        {
+            IncType = inc;
         }
     }
 
     class Scanner : Tech
     {
         public string DocType { get; set; }
+
         public override string ToString()
         {
             return base.ToString() + " " + this.DocType;
+        }
+
+        public Scanner() : base()
+        {
+            DocType = "NoName DocType";
+        }
+
+        public Scanner(string organization, string product, string manufacturer, string doc) : base(organization, product, manufacturer)
+        {
+            DocType = doc;
         }
     }
 
     class Tablet : Computer, IMyInterface
     {
         public string Resolution { get; set; }
-        public int MyFunc()
+        public override string MyFunc()
         {
-            return 0;
+            return "Переопределение";
         }
+        string IMyInterface.MyFunc()
+        {
+            return "Реализация функции интерфейса";
+        }
+
         public override string ToString()
         {
             return base.ToString() + " " + this.Resolution;
@@ -106,9 +146,15 @@ namespace ConsoleApp1
         {
             Product product = new Product("123", "213");
             Tech tech = new Tech("456", "789", "456789");
+            Tablet tablet = new Tablet();
+            IMyInterface myInterface = tablet;
 
             Console.WriteLine(product.ToString());
             Console.WriteLine(tech.ToString());
+            Console.WriteLine(tablet.MyFunc());
+            Console.WriteLine(myInterface.MyFunc());
+            Console.WriteLine($"myInterface is IMyInterface = {myInterface is IMyInterface}");
+            Console.WriteLine($"myInterface is Tabet = {myInterface is Tablet}");
         }
     }
 }
