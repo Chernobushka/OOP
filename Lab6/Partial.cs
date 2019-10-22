@@ -23,11 +23,21 @@ namespace ConsoleApp1
         }
     }
 
+    enum list
+    {
+        one = 1,
+        two,
+        three,
+        nine = 9,
+        ten
+    }
+
     public class Lab
     {
-        Base[] elems;
+        public Base[] elems;
         public int count = 0;
         public int size;
+        list list = new list();
 
         public Lab()
         {
@@ -81,15 +91,70 @@ namespace ConsoleApp1
             {
                 Console.WriteLine(elems[i].ToString());     
             }
+            Console.WriteLine();
         }
     }
 
     public abstract class Base
     {
-        struct Info
+        public struct Info
         {
-            int price;
+            public int price;
         }
-        Info info = new Info();
+        public Info info = new Info();
+    }
+
+    public static class controller
+    {
+        public static void sort(Lab lab)
+        {
+            Base elem;
+            for (int i = 0; i < lab.count - 1; i++)
+            {
+                for (int j = 0; j < lab.count - i - 1; j++)
+                {
+                    if (lab.elems[j].info.price < lab.elems[j + 1].info.price)
+                    {
+                        elem = lab.elems[j];
+                        lab.elems[j] = lab.elems[j + 1];
+                        lab.elems[j + 1] = elem;
+                    }
+                }
+            }
+        }
+
+        public static void show(Lab lab)
+        {
+            string[] products = new string[6];
+            int[] count = new int[6];
+            int pos = 0;
+            bool b = false;
+            for (int j = 0; j < lab.count; j++)
+            {
+                for (int i = 0; i < pos; i++)
+                {
+                    if (products[i] == (lab.elems[j].GetType()).Name)
+                    {
+                        b = true;
+                        count[i]++;
+                        break;
+                    }
+                }
+                if (!b)
+                {
+                    products[pos] = lab.elems[j].GetType().Name;
+                    count[pos]++;
+                    pos++;
+                }
+                b = false;
+            }
+
+            Console.WriteLine("Lab elements:");
+            for (int i = 0; i < pos; i++)
+            {
+                Console.WriteLine($"{products[i]} - {count[i]}");
+            }
+            Console.WriteLine();
+        }
     }
 }

@@ -23,10 +23,11 @@ namespace ConsoleApp1
             ProductName = "NoName product";
         }
 
-        public Product(string organization, string product)
+        public Product(string organization, string product, int price)
         {
             OrganizationName = organization;
             ProductName = product;
+            info.price = price;
         }
     }
 
@@ -38,7 +39,7 @@ namespace ConsoleApp1
             ManufacturerName = "NoName Manufacturer";
         }
 
-        public Tech(string organization, string product, string manufacturer) : base(organization, product)
+        public Tech(string organization, string product, string manufacturer, int price) : base(organization, product, price)
         {
             ManufacturerName = manufacturer;
         }
@@ -63,7 +64,7 @@ namespace ConsoleApp1
             OS = "NoName OS";
         }
 
-        public Computer(string organization, string product, string manufacturer, string os) : base(organization, product, manufacturer)
+        public Computer(string organization, string product, string manufacturer, string os, int price) : base(organization, product, manufacturer, price)
         {
             OS = os;
         }
@@ -85,7 +86,7 @@ namespace ConsoleApp1
             IncType = "NoName Inc";
         }
 
-        public Printer(string organization, string product, string manufacturer, string inc) : base(organization, product, manufacturer)
+        public Printer(string organization, string product, string manufacturer, string inc, int price) : base(organization, product, manufacturer, price)
         {
             IncType = inc;
         }
@@ -105,7 +106,7 @@ namespace ConsoleApp1
             DocType = "NoName DocType";
         }
 
-        public Scanner(string organization, string product, string manufacturer, string doc) : base(organization, product, manufacturer)
+        public Scanner(string organization, string product, string manufacturer, string doc, int price) : base(organization, product, manufacturer, price)
         {
             DocType = doc;
         }
@@ -142,35 +143,25 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Product product = new Product("123", "213");
-            Tech tech = new Tech("456", "789", "456789");
+            Product product = new Product("123", "213", 100);
+            Tech tech = new Tech("456", "789", "456789", 200);
             Tablet tablet = new Tablet();
-            IMyInterface myInterface = tablet;
-            IAnotherInterface[] arr = new IAnotherInterface[3];
-            Lab lab = new Lab(5);
+            Lab lab = new Lab(10);
+            tablet.info.price = 300;
             lab.Add(product);
             lab.Add(tech);
             lab.Add(tablet);
+            lab.Add(new Scanner());
+            lab.Add(new Printer());
+            lab.Add(new Product());
 
-            arr[0] = product;
-            arr[1] = tech;
-            arr[2] = tablet;
-
-
-            //Console.WriteLine(product.ToString());
-            //Console.WriteLine(tech.ToString());
-            //Console.WriteLine(tablet.MyFunc());
-            //Console.WriteLine(myInterface.MyFunc());
-            //Console.WriteLine($"myInterface is IMyInterface = {myInterface is IMyInterface}");
-            //Console.WriteLine($"myInterface is Tabet = {myInterface is Tablet}");
-            //foreach (IAnotherInterface x in arr)
-            //{
-            //    Print.IAmPrinting(x);
-            //}
-
+            lab.show();
+            controller.show(lab);
+            controller.sort(lab);
             lab.show();
             lab.Del(tablet);
             lab.show();
+
         }
     }
 }
