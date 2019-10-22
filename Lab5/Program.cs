@@ -7,7 +7,12 @@ namespace ConsoleApp1
         string MyFunc();
     }
 
-    class Product
+    interface IAnotherInterface
+    {
+        string ToString();
+    }
+
+    class Product : IAnotherInterface
     {
         public string OrganizationName { get; set; }
         public string ProductName { get; set; }
@@ -32,7 +37,7 @@ namespace ConsoleApp1
 
         public override int GetHashCode()
         {
-            return OrganizationName.GetHashCode() + ProductName.GetHashCode();
+            return this.OrganizationName.GetHashCode() + this.ProductName.GetHashCode();
         }
 
         public override string ToString()
@@ -41,7 +46,7 @@ namespace ConsoleApp1
         }
     }
 
-    class Tech : Product
+    class Tech : Product, IAnotherInterface
     {
         public string ManufacturerName { get; set; }
         public Tech() : base()
@@ -60,7 +65,7 @@ namespace ConsoleApp1
         }
     }
 
-    abstract class Computer : Tech
+    abstract class Computer : Tech, IAnotherInterface
     {
         public string OS { get; set; }
 
@@ -82,7 +87,7 @@ namespace ConsoleApp1
         public abstract string MyFunc();
     }
 
-    sealed class Printer : Tech
+    sealed class Printer : Tech, IAnotherInterface
     {
         public string IncType { get; set; }
 
@@ -102,7 +107,7 @@ namespace ConsoleApp1
         }
     }
 
-    class Scanner : Tech
+    class Scanner : Tech, IAnotherInterface
     {
         public string DocType { get; set; }
 
@@ -122,7 +127,7 @@ namespace ConsoleApp1
         }
     }
 
-    class Tablet : Computer, IMyInterface
+    class Tablet : Computer, IMyInterface, IAnotherInterface
     {
         public string Resolution { get; set; }
         public override string MyFunc()
@@ -131,7 +136,7 @@ namespace ConsoleApp1
         }
         string IMyInterface.MyFunc()
         {
-            return "Реализация функции интерфейса";
+            return "Реализация метода интерфейса";
         }
 
         public override string ToString()
@@ -139,6 +144,15 @@ namespace ConsoleApp1
             return base.ToString() + " " + this.Resolution;
         }
     }
+
+    class Print
+    {
+        public static void IAmPrinting(IAnotherInterface obj)
+        {
+            Console.WriteLine(obj.ToString());
+        }
+    }
+
 
     class Program
     {
@@ -148,6 +162,10 @@ namespace ConsoleApp1
             Tech tech = new Tech("456", "789", "456789");
             Tablet tablet = new Tablet();
             IMyInterface myInterface = tablet;
+            IAnotherInterface[] arr = new IAnotherInterface[3];
+            arr[0] = product;
+            arr[1] = tech;
+            arr[2] = tablet;
 
             Console.WriteLine(product.ToString());
             Console.WriteLine(tech.ToString());
@@ -155,6 +173,10 @@ namespace ConsoleApp1
             Console.WriteLine(myInterface.MyFunc());
             Console.WriteLine($"myInterface is IMyInterface = {myInterface is IMyInterface}");
             Console.WriteLine($"myInterface is Tabet = {myInterface is Tablet}");
+            foreach(IAnotherInterface x in arr)
+            {
+                Print.IAmPrinting(x);
+            }
         }
     }
 }
