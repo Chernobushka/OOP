@@ -28,7 +28,7 @@ namespace ConsoleApp1
         }
     }
 
-    public class Set<T> : IMyInterface <T> where T : IAnotherInterface
+    public class Set<T> : IMyInterface <T>
     {
         public int Size;
         public Owner owner;
@@ -206,14 +206,22 @@ namespace ConsoleApp1
         }
     }
 
-
     class Program
     {
         static void Main(string[] args)
         {
             try
             {
-                Set<Tablet> set = new Set<Tablet>(-400);
+                Set<int> set1 = new Set<int>();
+                Set<Tablet> set = new Set<Tablet>(10);
+                set.add(new Tablet("Asd", "asdd", "qwe", "qwqq", "eqw", 400));
+                set.add(new Tablet("Asd", "asdd", "qwe", "qwqq", "eqw", 400));
+                set.add(new Tablet("Asd", "asdddqqe1", "312312312", "32131231", "e1231231", 400));
+                set.show();
+
+                set1.add(123);
+                set1.add(23);
+                Console.WriteLine(set == set1);
             }
             catch (Exception ex)
             {

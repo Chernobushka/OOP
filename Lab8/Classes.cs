@@ -1,9 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace ConsoleApp1
 { 
     public interface IAnotherInterface
     {
+        string ToString();
+    }
+    public interface IInterface
+    {
+        bool Equals(object obj);
         string ToString();
     }
 
@@ -16,7 +22,7 @@ namespace ConsoleApp1
         public Info info = new Info();
     }
 
-    partial class Product : Base, IAnotherInterface
+    class Product : Base, IAnotherInterface, IInterface
     {
         public string OrganizationName { get; set; }
         public string ProductName { get; set; }
@@ -51,7 +57,7 @@ namespace ConsoleApp1
         }
     }
 
-    class Tech : Product, IAnotherInterface
+    class Tech : Product, IAnotherInterface, IInterface
     {
         public string ManufacturerName { get; set; }
         public Tech() : base()
@@ -70,7 +76,7 @@ namespace ConsoleApp1
         }
     }
 
-    abstract class Computer : Tech, IAnotherInterface
+    abstract class Computer : Tech, IAnotherInterface, IInterface
     {
         public string OS { get; set; }
 
@@ -92,7 +98,7 @@ namespace ConsoleApp1
         public abstract string MyFunc();
     }
 
-    sealed class Printer : Tech, IAnotherInterface
+    sealed class Printer : Tech, IAnotherInterface, IInterface
     {
         public string IncType { get; set; }
 
@@ -112,7 +118,7 @@ namespace ConsoleApp1
         }
     }
 
-    class Scanner : Tech, IAnotherInterface
+    class Scanner : Tech, IAnotherInterface, IInterface
     {
         public string DocType { get; set; }
 
@@ -132,12 +138,17 @@ namespace ConsoleApp1
         }
     }
 
-    class Tablet : Computer, IAnotherInterface
+    class Tablet : Computer, IAnotherInterface, IInterface
     {
         public string Resolution { get; set; }
         public override string MyFunc()
         {
             return "Переопределение";
+        }
+
+        public Tablet(string organization, string product, string manufacturer, string os, string res, int price) : base(organization, product, manufacturer, os, price)
+        {
+            Resolution = res;
         }
 
         public override string ToString()
