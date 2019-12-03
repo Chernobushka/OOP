@@ -6,7 +6,7 @@ namespace ConsoleApp1
 {
     partial class Abiturient
     {
-        private readonly int id;
+        public int id;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Adress { get; set; }
@@ -83,6 +83,12 @@ namespace ConsoleApp1
                 sum += x;
             }
             return sum;
+        }
+
+        public static void show(string NewFirstName, string NewLastName)
+        {
+            Console.WriteLine($"Первый параметр = {NewFirstName}");
+            Console.WriteLine($"Второй параметр = {NewLastName}");
         }
     }
 

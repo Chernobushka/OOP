@@ -6,14 +6,22 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Reflector.ToFile(typeof(Abiturient), "abiturient");
-            Reflector.ToFile(typeof(Tablet), "tablet");
+            Reflector.ToFile("Abiturient", "abiturient");
+            Reflector.ToFile("Tablet", "tablet");
 
-            Reflector.GetPublicMethods(typeof(Abiturient));
-            Reflector.GetPublicMethods(typeof(Tablet));
+            Reflector.GetPublicMethods("Abiturient");
+            Reflector.GetPublicMethods("Tablet");
 
-            Reflector.GetField(typeof(Abiturient));
-            Reflector.GetField(typeof(Tablet));
+            Reflector.GetField("Abiturient");
+            Reflector.GetField("Tablet");
+
+            Reflector.GetInterfaces("Tablet");
+            Reflector.GetInterfaces("Abiturient");
+
+            Reflector.GetMethodsByParam("Abiturient", "System.String");
+            Reflector.GetMethodsByParam("Tablet", "System.String");
+
+            Reflector.CallMethodFromFile("Abiturient", "show");
         }
     }
 }
