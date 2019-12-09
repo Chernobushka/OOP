@@ -9,11 +9,10 @@ namespace ConsoleApp1
         {
             try
             {
-                ASVLog log = new ASVLog(@"D:\Lab.txt");
-                StreamWriter str = new StreamWriter(@"D:\11.txt");
-                str.WriteLine(1111);
-                str.Close();
-
+                ASVLog log = new ASVLog(@"D:\Log.txt");
+                StreamWriter str;
+                string str1;
+                
                 ASVDiskInfo.ShowFreeSpace();
                 ASVDiskInfo.ShowFileSystem();
                 ASVDiskInfo.ShowDiskInfo();
@@ -25,7 +24,20 @@ namespace ConsoleApp1
 
                 ASVDirInfo.ShowDirInfo(@"D:\Универ\Лабы");
 
+                ASVFileManager.MethodOne(@"D:\ASVInspect\");
+                ASVFileManager.CopyDir(@"D:\ASVInspect\", @"D:\ASVFile");
+
+                str1 = Console.ReadLine();
+                while (str1 != "q")
+                {
+                    str = new StreamWriter(@"D:\11.txt");
+                    str.WriteLine(str1);
+                    str1 = Console.ReadLine();
+                    str.Close();
+                }
+
                 log.close();
+                log.GetByCurrentMinute(@"D:\FinalLog.txt");
             }
             catch (Exception e)
             {
