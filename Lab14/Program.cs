@@ -7,6 +7,10 @@ using System.Runtime.Serialization.Formatters.Soap;
 using System.Runtime.Serialization.Json;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using System.Linq;
+using System.Xml;
+using System.Xml.XPath;
+using System.Xml.Resolvers;
 
 namespace ConsoleApp1
 {
@@ -95,25 +99,66 @@ namespace ConsoleApp1
                 }
             }
 
+            Console.WriteLine();
+
+            //XPath
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("DTD.xml");
+
+            XmlNodeList nodeList = xmlDoc.DocumentElement.SelectNodes("SPEC[CITY='Минск']");
+            XmlNodeList nodeList2 = xmlDoc.DocumentElement.SelectNodes("SPEC[UNIVERSITY='БГТУ']");
+
+            foreach(XmlNode x in nodeList)
+            {
+                Console.WriteLine(x.InnerXml);
+            }
+            Console.WriteLine();
+
+            foreach (XmlNode x in nodeList2)
+            {
+                Console.WriteLine(x.InnerXml);
+            }
+            Console.WriteLine();
+
             //LINQ to XML
             XDocument newXmlDoc = new XDocument(new XElement("books",
                 new XElement("book",
-                new XElement("title", "123"),
+                new XElement("Title", "123"),
                 new XElement("Author","456"),
                 new XElement("Price", 200)),
                 new XElement("book",
-                new XElement("title", "qwe"),
-                new XElement("Author", "qwe"),
+                new XElement("Title", "qwe"),
+                new XElement("Author", "456"),
                 new XElement("Price", 400)),
                 new XElement("book",
                 new XElement("title", "asd"),
                 new XElement("Author", "asd"),
                 new XElement("Price", 600)), 
                 new XElement("book",
-                new XElement("title", "zxc"),
-                new XElement("Author", "zxc"),
+                new XElement("Title", "zxc"),
+                new XElement("Author", "456"),
                 new XElement("Price", 800))
                 ));
+
+            var list1 = from xe in newXmlDoc.Element("books").Elements("book")
+                        where xe.Element("Author").Value == "456"
+                        select xe;
+
+            foreach (var x in list1)
+            {
+                Console.WriteLine(x);
+            }
+            Console.WriteLine();
+
+            var list2 = from xe in newXmlDoc.Element("books").Elements("book")
+                        where Convert.ToInt32(xe.Element("Price").Value) >= 400
+                        select xe;
+
+            foreach (var x in list2)
+            {
+                Console.WriteLine(x);
+            }
+
             newXmlDoc.Save("LinqXml.xml");
 
         }
