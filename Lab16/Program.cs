@@ -6,6 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+/*
+    !!!WARNING!!! 
+    This program requires at least 1GB of free RAM!!! 
+*/
+
 namespace ConsoleApp1
 {
     class Program
@@ -25,33 +30,33 @@ namespace ConsoleApp1
             Task task;
 
             //Task 1
-            for (int i = 0; i < 3; i++)
-            {
-                stopwatch.Start();
-                task = Task.Factory.StartNew(FindSimpleNumber);
-                Console.WriteLine($"\nЗадача {i}. ID: {task.Id.ToString()}");
-                Console.WriteLine($"\nЗадача {i}. статус: {task.Status.ToString()}");
-                task.Wait();
-                stopwatch.Stop();
-                Console.WriteLine($"\nВремя выполнения задачи {i}: {stopwatch.Elapsed.TotalMilliseconds.ToString()}\n");
-                stopwatch.Reset();
-            }
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stopwatch.Start();
+            //    task = Task.Factory.StartNew(FindSimpleNumber);
+            //    Console.WriteLine($"\nЗадача {i}. ID: {task.Id.ToString()}");
+            //    Console.WriteLine($"\nЗадача {i}. статус: {task.Status.ToString()}");
+            //    task.Wait();
+            //    stopwatch.Stop();
+            //    Console.WriteLine($"\nВремя выполнения задачи {i}: {stopwatch.Elapsed.TotalMilliseconds.ToString()}\n");
+            //    stopwatch.Reset();
+            //}
 
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
 
-            //Task 2
-            stopwatch.Start();
-            task = Task.Factory.StartNew(FindSimpleNumber);
-            Console.WriteLine($"\nID задачи: {task.Id.ToString()}");
-            Console.WriteLine($"\nСтатус задачи: {task.Status.ToString()}");
-            Console.WriteLine("q - для выхода ");
-            if (Console.ReadKey().KeyChar == 'q')
-                source.Cancel();
-            task.Wait();
-            stopwatch.Stop();
-            Console.WriteLine($"\nВремя выполнения задачи: {stopwatch.Elapsed.TotalMilliseconds.ToString()}\n");
+            ////Task 2
+            //stopwatch.Start();
+            //task = Task.Factory.StartNew(FindSimpleNumber);
+            //Console.WriteLine($"\nID задачи: {task.Id.ToString()}");
+            //Console.WriteLine($"\nСтатус задачи: {task.Status.ToString()}");
+            //Console.WriteLine("q - для выхода ");
+            //if (Console.ReadKey().KeyChar == 'q')
+            //    source.Cancel();
+            //task.Wait();
+            //stopwatch.Stop();
+            //Console.WriteLine($"\nВремя выполнения задачи: {stopwatch.Elapsed.TotalMilliseconds.ToString()}\n");
 
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
 
             //Task 3, 4
             task3();
@@ -108,6 +113,9 @@ namespace ConsoleApp1
             Console.WriteLine($"Время выполнения: {stopwatch.Elapsed.TotalMilliseconds.ToString()}\n");
             stopwatch.Reset();
 
+            //Task 8
+            Task8();
+
             //Task 7
             Task7.Start();
         }
@@ -137,30 +145,30 @@ namespace ConsoleApp1
 
         public static int func1()
         {
-            Console.WriteLine($"Task1 completed. Result: {num1 * num2}");
+            //Console.WriteLine($"Task1 completed. Result: {num1 * num2}");
             return num1 * num2;
         }
         private static int func2()
         {
-            Console.WriteLine($"Task2 completed. Result: {num1 - num2}");
+            //Console.WriteLine($"Task2 completed. Result: {num1 - num2}");
             return num1 - num2;
         }
         private static int func3()
         {
-            Console.WriteLine($"Task3 completed. Result: {num3 + num2}");
+            //Console.WriteLine($"Task3 completed. Result: {num3 + num2}");
             return num3 + num2;
         }
 
-        private static async void task3()
+        private static void task3()
         {
             //Task 3, 4
             Task<int> task1 = new Task<int>(func1);
             Task<int> task2 = new Task<int>(func2);
             Task<int> task3 = new Task<int>(func3);
 
-            await task1.ContinueWith((t1) => Console.WriteLine($"Task1 Completed. Result: {t1.Result}"));
-            await task2.ContinueWith((t2) => Console.WriteLine($"Task2 Completed. Result: {t2.Result}"));
-            await task3.ContinueWith((t3) => Console.WriteLine($"Task3 Completed. Result: {t3.Result}"));
+            task1.ContinueWith((t1) => Console.WriteLine($"Task1 Completed. Result: {t1.Result}"));
+            task2.ContinueWith((t2) => Console.WriteLine($"Task2 Completed. Result: {t2.Result}"));
+            task3.ContinueWith((t3) => Console.WriteLine($"Task3 Completed. Result: {t3.Result}"));
 
             task1.Start();
             task2.Start();
@@ -168,6 +176,21 @@ namespace ConsoleApp1
 
             var awaiter = task1.GetAwaiter();
             awaiter.OnCompleted(() => Console.WriteLine($"Task1 completed. Result: {awaiter.GetResult()}"));
+        }
+
+        private static async void Task8()
+        {
+            void func()
+            {
+                Random random = new Random();
+                int[] arr = new int[100000000];
+                for (int j = 0; j < arr.Length; j++)
+                    arr[j] = random.Next();
+            }
+
+            Console.WriteLine("Async started");
+            await Task.Factory.StartNew(func);
+            Console.WriteLine("Async finished");
         }
     }
 }
